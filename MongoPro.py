@@ -46,10 +46,14 @@ new_dict=dict(zip(urls,result));
 
 print(new_dict)
 # connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
-client = MongoClient("127.0.0.1:27017")
-db=client.speedTest
-collection=db.hpseCollection
-post = {"author": socket.gethostname(),"testResult": new_dict,"date": datetime.datetime.utcnow()}
+try:
+	client = MongoClient("127.0.0.1:27017")
+	db=client.speedTest
+	collection=db.hpseCollection
+	post = {"author": socket.gethostname(),"ip": socket.gethostbyname(socket.gethostname()),"testResult": new_dict,"date": datetime.datetime.utcnow()}
 
-post_id=collection.insert(post,check_keys=False)
-print(post_id)
+	post_id=collection.insert(post,check_keys=False)
+	print(post_id)
+except Exception as ee:
+	print("Some error while connecting to DB")
+	print(e)
